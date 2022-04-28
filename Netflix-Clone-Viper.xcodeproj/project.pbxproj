@@ -10,7 +10,6 @@
 		01E45D20281ACA0B00D957AE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E45D1F281ACA0B00D957AE /* AppDelegate.swift */; };
 		01E45D22281ACA0B00D957AE /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E45D21281ACA0B00D957AE /* SceneDelegate.swift */; };
 		01E45D24281ACA0B00D957AE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E45D23281ACA0B00D957AE /* ViewController.swift */; };
-		01E45D27281ACA0B00D957AE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 01E45D25281ACA0B00D957AE /* Main.storyboard */; };
 		01E45D2A281ACA0B00D957AE /* Netflix_Clone_Viper.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 01E45D28281ACA0B00D957AE /* Netflix_Clone_Viper.xcdatamodeld */; };
 		01E45D2C281ACA0D00D957AE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 01E45D2B281ACA0D00D957AE /* Assets.xcassets */; };
 		01E45D2F281ACA0D00D957AE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 01E45D2D281ACA0D00D957AE /* LaunchScreen.storyboard */; };
@@ -41,7 +40,6 @@
 		01E45D1F281ACA0B00D957AE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		01E45D21281ACA0B00D957AE /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		01E45D23281ACA0B00D957AE /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		01E45D26281ACA0B00D957AE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		01E45D29281ACA0B00D957AE /* Netflix_Clone_Viper.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Netflix_Clone_Viper.xcdatamodel; sourceTree = "<group>"; };
 		01E45D2B281ACA0D00D957AE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		01E45D2E281ACA0D00D957AE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -101,10 +99,10 @@
 		01E45D1E281ACA0B00D957AE /* Netflix-Clone-Viper */ = {
 			isa = PBXGroup;
 			children = (
+				01E45D52281ACBBF00D957AE /* Viper */,
 				01E45D1F281ACA0B00D957AE /* AppDelegate.swift */,
 				01E45D21281ACA0B00D957AE /* SceneDelegate.swift */,
 				01E45D23281ACA0B00D957AE /* ViewController.swift */,
-				01E45D25281ACA0B00D957AE /* Main.storyboard */,
 				01E45D2B281ACA0D00D957AE /* Assets.xcassets */,
 				01E45D2D281ACA0D00D957AE /* LaunchScreen.storyboard */,
 				01E45D30281ACA0D00D957AE /* Info.plist */,
@@ -128,6 +126,13 @@
 				01E45D45281ACA0D00D957AE /* Netflix_Clone_ViperUITestsLaunchTests.swift */,
 			);
 			path = "Netflix-Clone-ViperUITests";
+			sourceTree = "<group>";
+		};
+		01E45D52281ACBBF00D957AE /* Viper */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Viper;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -236,7 +241,6 @@
 			files = (
 				01E45D2F281ACA0D00D957AE /* LaunchScreen.storyboard in Resources */,
 				01E45D2C281ACA0D00D957AE /* Assets.xcassets in Resources */,
-				01E45D27281ACA0B00D957AE /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -301,14 +305,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		01E45D25281ACA0B00D957AE /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				01E45D26281ACA0B00D957AE /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		01E45D2D281ACA0D00D957AE /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -445,7 +441,6 @@
 				INFOPLIST_FILE = "Netflix-Clone-Viper/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -472,7 +467,6 @@
 				INFOPLIST_FILE = "Netflix-Clone-Viper/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
