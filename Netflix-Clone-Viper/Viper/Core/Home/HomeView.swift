@@ -17,11 +17,6 @@ protocol AnyHomeView {
 class HomeView: UIViewController, AnyHomeView {
     
     var presenter: AnyHomePresenter?
-    
-    private var randomTrendingMovie: Title?
-    private var headerView: HeroHeaderUIView?
-
-    let sectionTitles: [String] = ["Trending Movies", "Trending Tv", "Popular", "Upcoming Movies", "Top rated"]
 
     private let homeFeedTable: UITableView = {
         let table = UITableView(frame: .zero, style: .grouped)
@@ -38,25 +33,13 @@ class HomeView: UIViewController, AnyHomeView {
 
         configureNavbar()
 
-        headerView = HeroHeaderUIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 500))
-        homeFeedTable.tableHeaderView = headerView
+        presenter?.headerView = HeroHeaderUIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 500))
+        homeFeedTable.tableHeaderView = presenter?.headerView
         configureHeroHeaderView()
     }
 
     private func configureHeroHeaderView() {
-
-        TheMovieDB.shared.get(from: K.TheMovieDB.trendingMovie) { [weak self] result in
-            switch result {
-            case .success(let titles):
-                let selectedTitle = titles.randomElement()
-
-                self?.randomTrendingMovie = selectedTitle
-                self?.headerView?.configure(with: TitleViewModel(titleName: selectedTitle?.original_title ?? "", posterURL: selectedTitle?.poster_path ?? ""))
-
-            case .failure(let erorr):
-                print(erorr.localizedDescription)
-            }
-        }
+        presenter?.getData(from: K.TheMovieDB.trendingMovie)
     }
     
     private func configureNavbar() {
@@ -80,7 +63,7 @@ class HomeView: UIViewController, AnyHomeView {
 extension HomeView: UITableViewDelegate, UITableViewDataSource {
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        return sectionTitles.count
+        return presenter?.sectionTitles.count ?? 0
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -171,7 +154,7 @@ extension HomeView: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return sectionTitles[section]
+        return presenter?.sectionTitles[section]
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
