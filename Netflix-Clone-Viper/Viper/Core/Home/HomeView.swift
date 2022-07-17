@@ -80,66 +80,24 @@ extension HomeView: UITableViewDelegate, UITableViewDataSource {
 
         switch indexPath.section {
         case Sections.TrendingMovies.rawValue:
-            TheMovieDB.shared.get(from: K.TheMovieDB.trendingMovie) { result in
-                switch result {
-
-                case .success(let titles):
-                    cell.configure(with: titles)
-                case .failure(let error):
-                    print(error.localizedDescription)
-                }
-            }
-
+            presenter?.getSectionData(from: K.TheMovieDB.trendingMovie, make: cell.configure)
         case Sections.TrendingTv.rawValue:
-            TheMovieDB.shared.get(from: K.TheMovieDB.trendingTvs) { result in
-                switch result {
-                case .success(let titles):
-                    cell.configure(with: titles)
-                case .failure(let error):
-                    print(error.localizedDescription)
-                }
-            }
+            presenter?.getSectionData(from: K.TheMovieDB.trendingTvs, make: cell.configure)
         case Sections.Popular.rawValue:
-            TheMovieDB.shared.get(from: K.TheMovieDB.popular) { result in
-                switch result {
-                case .success(let titles):
-                    cell.configure(with: titles)
-                case .failure(let error):
-                    print(error.localizedDescription)
-                }
-            }
+            presenter?.getSectionData(from: K.TheMovieDB.popular, make: cell.configure)
         case Sections.Upcoming.rawValue:
-
-            TheMovieDB.shared.get(from: K.TheMovieDB.upcomingMovies) { result in
-                switch result {
-                case .success(let titles):
-                    cell.configure(with: titles)
-                case .failure(let error):
-                    print(error.localizedDescription)
-                }
-            }
-
+            presenter?.getSectionData(from: K.TheMovieDB.upcomingMovies, make: cell.configure)
         case Sections.TopRated.rawValue:
-            TheMovieDB.shared.get(from: K.TheMovieDB.topRated) { result in
-                switch result {
-                case .success(let titles):
-                    cell.configure(with: titles)
-                case .failure(let error):
-                    print(error)
-                }
-            }
+            presenter?.getSectionData(from: K.TheMovieDB.topRated, make: cell.configure)
         default:
             return UITableViewCell()
-
         }
-
         return cell
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 200
     }
-
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 40
@@ -160,7 +118,6 @@ extension HomeView: UITableViewDelegate, UITableViewDataSource {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let defaultOffset = view.safeAreaInsets.top
         let offset = scrollView.contentOffset.y + defaultOffset
-
         navigationController?.navigationBar.transform = .init(translationX: 0, y: min(0, -offset))
     }
 }

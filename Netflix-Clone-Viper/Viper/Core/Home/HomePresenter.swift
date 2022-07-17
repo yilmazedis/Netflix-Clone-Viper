@@ -17,6 +17,7 @@ protocol AnyHomePresenter {
     var sectionTitles: [String] { get }
     
     func getData(from address: String)
+    func getSectionData(from address: String, make configure: @escaping (_ titles: [Title]) -> Void)
 }
 
 class HomePresenter: AnyHomePresenter {
@@ -32,6 +33,10 @@ class HomePresenter: AnyHomePresenter {
     
     func getData(from address: String) {
         interactor?.getData(from: address)
+    }
+    
+    func getSectionData(from address: String, make configure: @escaping (_ titles: [Title]) -> Void) {
+        interactor?.getSectionData(from: address, make: configure)
     }
     
 }

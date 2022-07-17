@@ -10,6 +10,7 @@ import Foundation
 protocol AnyHomeInteractor {
     var presenter: AnyHomePresenter? { get set }
     func getData(from address: String)
+    func getSectionData(from address: String, make configure: @escaping (_ titles: [Title]) -> Void)
 }
 
 class HomeInteractor: AnyHomeInteractor {
@@ -26,6 +27,17 @@ class HomeInteractor: AnyHomeInteractor {
 
             case .failure(let erorr):
                 print(erorr.localizedDescription)
+            }
+        }
+    }
+    
+    func getSectionData(from address: String, make configure: @escaping (_ titles: [Title]) -> Void) {
+        TheMovieDB.shared.get(from: address) { result in
+            switch result {
+            case .success(let titles):
+                configure(titles)
+            case .failure(let error):
+                print(error.localizedDescription)
             }
         }
     }
