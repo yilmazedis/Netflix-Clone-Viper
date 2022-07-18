@@ -16,7 +16,7 @@ protocol AnyHomePresenter {
     var randomTrendingMovie: Title? { get set }
     var sectionTitles: [String] { get }
     
-    func getData(from address: String)
+    func getHeaderData(from address: String)
     func getSectionData(from address: String, make configure: @escaping (_ titles: [Title]) -> Void)
 }
 
@@ -31,12 +31,11 @@ class HomePresenter: AnyHomePresenter {
     
     let sectionTitles: [String] = ["Trending Movies", "Trending Tv", "Popular", "Upcoming Movies", "Top rated"]
     
-    func getData(from address: String) {
+    func getHeaderData(from address: String) {
         interactor?.getData(from: address)
     }
     
     func getSectionData(from address: String, make configure: @escaping (_ titles: [Title]) -> Void) {
         interactor?.getSectionData(from: address, make: configure)
     }
-    
 }

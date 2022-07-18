@@ -39,7 +39,7 @@ class HomeView: UIViewController, AnyHomeView {
     }
 
     private func configureHeroHeaderView() {
-        presenter?.getData(from: K.TheMovieDB.trendingMovie)
+        presenter?.getHeaderData(from: K.TheMovieDB.trendingMovie)
     }
     
     private func configureNavbar() {
@@ -125,9 +125,9 @@ extension HomeView: UITableViewDelegate, UITableViewDataSource {
 extension HomeView: CollectionViewTableViewCellDelegate {
     func collectionViewTableViewCellDidTapCell(_ cell: CollectionViewTableViewCell, viewModel: TitlePreviewViewModel) {
         DispatchQueue.main.async { [weak self] in
-            let vc = TitlePreviewRouter.start().entry
-            //vc.configure(with: viewModel)
-            self?.navigationController?.pushViewController(vc!, animated: true)
+            guard let vc = TitlePreviewRouter.start().entry as? TitlePreviewView else { return }
+            vc.configure(with: viewModel)
+            self?.navigationController?.pushViewController(vc, animated: true)
         }
     }
 }

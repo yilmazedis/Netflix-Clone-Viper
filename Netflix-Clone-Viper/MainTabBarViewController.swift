@@ -13,7 +13,6 @@ class MainTabBarViewController: UITabBarController {
         super.viewDidLoad()
         view.backgroundColor = .systemYellow
         
-        
         let home = UINavigationController(rootViewController: HomeRouter.start().entry!)
         let upcoming = UINavigationController(rootViewController: UpcomingRouter.start().entry!)
         let search = UINavigationController(rootViewController: SearchRouter.start().entry!)
@@ -32,9 +31,5 @@ class MainTabBarViewController: UITabBarController {
         tabBar.tintColor = .label
         
         setViewControllers([home, upcoming, search, download], animated: true)
-        
     }
-
-
 }
-
