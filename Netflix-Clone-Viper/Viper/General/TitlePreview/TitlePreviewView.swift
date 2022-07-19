@@ -12,6 +12,8 @@ typealias TitlePreviewEntryPoint = AnyTitlePreviewView & UIViewController
 
 protocol AnyTitlePreviewView {
     var presenter: AnyTitlePreviewPresenter? { set get }
+    
+    func webViewLoad(with url: URL)
 }
 
 class TitlePreviewView: UIViewController, AnyTitlePreviewView {
@@ -22,7 +24,6 @@ class TitlePreviewView: UIViewController, AnyTitlePreviewView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .systemFont(ofSize: 22, weight: .bold)
-        label.text = "Harry potter"
         return label
     }()
     
@@ -32,7 +33,6 @@ class TitlePreviewView: UIViewController, AnyTitlePreviewView {
         label.font = .systemFont(ofSize: 18, weight: .regular)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
-        label.text = "This is the best movie ever to watch as a kid!"
         return label
     }()
     
@@ -57,7 +57,6 @@ class TitlePreviewView: UIViewController, AnyTitlePreviewView {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemBackground
         view.addSubview(webView)
         view.addSubview(titleLabel)
         view.addSubview(overviewLabel)
@@ -96,18 +95,15 @@ class TitlePreviewView: UIViewController, AnyTitlePreviewView {
         NSLayoutConstraint.activate(titleLabelConstraints)
         NSLayoutConstraint.activate(overviewLabelConstraints)
         NSLayoutConstraint.activate(downloadButtonConstraints)
-        
     }
-    
     
     func configure(with model: TitlePreviewViewModel) {
         titleLabel.text = model.title
         overviewLabel.text = model.titleOverview
-        
-        guard let url = URL(string: "https://www.youtube.com/embed/\(model.youtubeView.id.videoId)") else {
-            return
-        }
-        
+        presenter?.configure(with: model)
+    }
+    
+    func webViewLoad(with url: URL) {
         webView.load(URLRequest(url: url))
     }
 }
