@@ -20,7 +20,6 @@ class TitlePreviewView: UIViewController, AnyTitlePreviewView {
     var presenter: AnyTitlePreviewPresenter?
     
     private let titleLabel: UILabel = {
-        
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .systemFont(ofSize: 22, weight: .bold)
@@ -28,7 +27,6 @@ class TitlePreviewView: UIViewController, AnyTitlePreviewView {
     }()
     
     private let overviewLabel: UILabel = {
-        
         let label = UILabel()
         label.font = .systemFont(ofSize: 18, weight: .regular)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -37,7 +35,6 @@ class TitlePreviewView: UIViewController, AnyTitlePreviewView {
     }()
     
     private let downloadButton: UIButton = {
-        
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .red
@@ -45,7 +42,6 @@ class TitlePreviewView: UIViewController, AnyTitlePreviewView {
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 8
         button.layer.masksToBounds = true
-        
         return button
     }()
     
@@ -57,15 +53,17 @@ class TitlePreviewView: UIViewController, AnyTitlePreviewView {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        configureConstraints()
+    }
+    
+    func configureConstraints() {
+        
         view.addSubview(webView)
         view.addSubview(titleLabel)
         view.addSubview(overviewLabel)
         view.addSubview(downloadButton)
         
-        configureConstraints()
-    }
-    
-    func configureConstraints() {
         let webViewConstraints = [
             webView.topAnchor.constraint(equalTo: view.topAnchor, constant: 50),
             webView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
