@@ -98,6 +98,9 @@ class TitlePreviewView: UIViewController, AnyTitlePreviewView {
     func configure(with model: TitlePreviewViewModel) {
         titleLabel.text = model.title
         overviewLabel.text = model.titleOverview
+        
+        print(model)
+        
         presenter?.configure(with: model)
     }
     

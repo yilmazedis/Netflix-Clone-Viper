@@ -11,7 +11,7 @@ protocol AnyUpcomingInteractor {
     var presenter: AnyUpcoimngPresenter? { set get }
     
     func getCellData(from address: String)
-    func getYoutubeVideo(from address: String)
+    func getYoutubeVideo(from query: String)
 }
 
 class UpcomingInteractor: AnyUpcomingInteractor {
@@ -31,8 +31,8 @@ class UpcomingInteractor: AnyUpcomingInteractor {
         }
     }
     
-    func getYoutubeVideo(from address: String) {
-        TheMovieDB.shared.getMovie(with: address) { [weak self] result in
+    func getYoutubeVideo(from query: String) {
+        Youtube.shared.search(from: K.Youtube.search, with: query) { [weak self] result in
             switch result {
             case .success(let videoElement):
                 DispatchQueue.main.async {

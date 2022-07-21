@@ -6,3 +6,13 @@
 //
 
 import Foundation
+
+protocol AnySearchResultsInteractor {
+    var presenter: AnySearchResultsPresenter? { set get }
+}
+
+class SearchResultsInteractor: AnySearchResultsInteractor {
+    var presenter: AnySearchResultsPresenter?
+    
+    
+}
