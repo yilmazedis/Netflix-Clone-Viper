@@ -12,6 +12,8 @@ protocol AnyTitlePreviewPresenter {
     var interactor: AnyTitlePreviewInteractor? { set get }
     var router: AnyTitlePreviewRouter? { set get }
     
+    var model: Title? { get set }
+    
     func configure(with model: TitlePreviewViewModel)
 }
 
@@ -19,6 +21,8 @@ class TitlePreviewPresenter: AnyTitlePreviewPresenter {
     var view: AnyTitlePreviewView?
     var interactor: AnyTitlePreviewInteractor?
     var router: AnyTitlePreviewRouter?
+    
+    var model: Title?
  
     func configure(with model: TitlePreviewViewModel) {
         guard let url = URL(string: "https://www.youtube.com/embed/\(model.youtubeView.id.videoId)") else {

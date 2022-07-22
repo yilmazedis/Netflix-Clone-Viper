@@ -40,6 +40,7 @@ class TitlePreviewView: UIViewController, AnyTitlePreviewView {
         button.backgroundColor = .red
         button.setTitle("Download", for: .normal)
         button.setTitleColor(.white, for: .normal)
+        button.addTarget(TitlePreviewView.self, action: #selector(downloadButtonTouchUpInside), for: .touchUpInside)
         button.layer.cornerRadius = 8
         button.layer.masksToBounds = true
         return button
@@ -98,7 +99,7 @@ class TitlePreviewView: UIViewController, AnyTitlePreviewView {
     func configure(with model: TitlePreviewViewModel) {
         titleLabel.text = model.title
         overviewLabel.text = model.titleOverview
-        
+        //presenter?.model = model
         print(model)
         
         presenter?.configure(with: model)
@@ -106,5 +107,21 @@ class TitlePreviewView: UIViewController, AnyTitlePreviewView {
     
     func webViewLoad(with url: URL) {
         webView.load(URLRequest(url: url))
+    }
+    
+    @objc func downloadButtonTouchUpInside() {
+        
+    }
+    
+    // TODO: TitlePreview config is TitlePreviewViewModel but download expect Title
+    private func downloadTitleAt(title: Title) {
+        DataPersistenceManager.shared.downloadTitleWith(model: title) { result in
+            switch result {
+            case .success():
+                NotificationCenter.default.post(name: NSNotification.Name("downloaded"), object: nil)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
     }
 }
