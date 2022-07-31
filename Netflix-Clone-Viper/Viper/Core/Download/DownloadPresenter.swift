@@ -13,6 +13,7 @@ protocol AnyDownloadPresenter {
     var router: AnyDownloadRouter? { set get }
     
     var title: TitleItem? { set get }
+    var titles: [TitleItem]? { set get }
     
     func titlePreviewConfigure(with videoElement: VideoElement)
     func getYoutubeVideo(from address: String, with query: String)
@@ -24,6 +25,7 @@ class DownloadPresnter: AnyDownloadPresenter {
     var router: AnyDownloadRouter?
     
     var title: TitleItem?
+    var titles: [TitleItem]?
         
     func titlePreviewConfigure(with videoElement: VideoElement) {
         view?.titlePreviewConfigure(with: videoElement)

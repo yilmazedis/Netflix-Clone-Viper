@@ -18,8 +18,6 @@ protocol AnyDownloadView {
 class DownloadView: UIViewController, AnyDownloadView {
     var presenter: AnyDownloadPresenter?
     
-    private var titles: [TitleItem] = [TitleItem]()
-    
     private let downloadedTable: UITableView = {
         let table = UITableView()
         table.register(TitleTableViewCell.self, forCellReuseIdentifier: TitleTableViewCell.identifier)
@@ -45,7 +43,7 @@ class DownloadView: UIViewController, AnyDownloadView {
         DataPersistenceManager.shared.fetchingTitlesFromDataBase { [weak self] result in
             switch result {
             case .success(let titles):
-                self?.titles = titles
+                self?.presenter?.titles = titles
                 DispatchQueue.main.async {
                     self?.downloadedTable.reloadData()
                 }
@@ -78,7 +76,7 @@ class DownloadView: UIViewController, AnyDownloadView {
 
 extension DownloadView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return titles.count
+        return presenter?.titles?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -86,7 +84,7 @@ extension DownloadView: UITableViewDelegate, UITableViewDataSource {
             return UITableViewCell()
         }
         
-        let title = titles[indexPath.row]
+        guard let title = presenter?.titles?[indexPath.row] else { return UITableViewCell() }
         cell.configure(with: TitleViewModel(titleName: (title.original_title ?? title.original_name) ?? "Unknown title name", posterURL: title.poster_path ?? ""))
         return cell
     }
@@ -96,16 +94,19 @@ extension DownloadView: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        
+        guard let model = presenter?.titles?[indexPath.row] else { return }
+        
         switch editingStyle {
         case .delete:
-            DataPersistenceManager.shared.deleteTitleWith(model: titles[indexPath.row]) { [weak self] result in
+            DataPersistenceManager.shared.deleteTitleWith(model: model) { [weak self] result in
                 switch result {
                 case .success():
                     print("Deleted fromt the database")
                 case .failure(let error):
                     print(error.localizedDescription)
                 }
-                self?.titles.remove(at: indexPath.row)
+                self?.presenter?.titles?.remove(at: indexPath.row)
                 tableView.deleteRows(at: [indexPath], with: .fade)
             }
         default:
@@ -116,7 +117,7 @@ extension DownloadView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        let titleItem = titles[indexPath.row]
+        guard let titleItem = presenter?.titles?[indexPath.row] else { return }
         presenter?.title = titleItem
         presenter?.getYoutubeVideo(from: K.Youtube.search,
                                    with: titleItem.original_name ?? titleItem.original_title ?? "")
