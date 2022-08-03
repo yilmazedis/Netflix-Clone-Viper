@@ -13,12 +13,14 @@ protocol AnyDownloadView {
     var presenter: AnyDownloadPresenter? { set get }
     
     func titlePreviewConfigure(with videoElement: VideoElement)
+    func reloadTableView()
+    func deleteRow(index: IndexPath)
 }
 
 class DownloadView: UIViewController, AnyDownloadView {
     var presenter: AnyDownloadPresenter?
     
-    private let downloadedTable: UITableView = {
+    private let tableView: UITableView = {
         let table = UITableView()
         table.register(TitleTableViewCell.self, forCellReuseIdentifier: TitleTableViewCell.identifier)
         return table
@@ -28,49 +30,41 @@ class DownloadView: UIViewController, AnyDownloadView {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         title = "Downloads"
-        view.addSubview(downloadedTable)
+        view.addSubview(tableView)
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationItem.largeTitleDisplayMode = .always
-        downloadedTable.delegate = self
-        downloadedTable.dataSource = self
-        fetchLocalStorageForDownload()
-        NotificationCenter.default.addObserver(forName: NSNotification.Name("downloaded"), object: nil, queue: nil) { _ in
-            self.fetchLocalStorageForDownload()
-        }
-    }
-    
-    private func fetchLocalStorageForDownload() {
-        DataPersistenceManager.shared.fetchingTitlesFromDataBase { [weak self] result in
-            switch result {
-            case .success(let titles):
-                self?.presenter?.titles = titles
-                DispatchQueue.main.async {
-                    self?.downloadedTable.reloadData()
-                }
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
+        tableView.delegate = self
+        tableView.dataSource = self
+        presenter?.fetchLocalStorageForDownload()
+        NotificationCenter.default.addObserver(forName: NSNotification.Name("downloaded"),
+                                               object: nil,
+                                               queue: nil) { [weak self] _ in
+            self?.presenter?.fetchLocalStorageForDownload()
         }
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        downloadedTable.frame = view.bounds
+        tableView.frame = view.bounds
     }
     
     func titlePreviewConfigure(with videoElement: VideoElement) {
         DispatchQueue.main.async {
-            
-            guard let presenter = self.presenter else {
-                return
-            }
-            
+            guard let presenter = self.presenter else { return }
             guard let vc = TitlePreviewRouter.start().entry as? TitlePreviewView else { return }
             vc.configure(with: TitlePreviewViewModel(title: presenter.title?.original_name ?? "",
                                                      youtubeView: videoElement,
                                                      titleOverview: presenter.title?.overview ?? ""))
             self.navigationController?.pushViewController(vc, animated: true)
         }
+    }
+    
+    func reloadTableView() {
+        tableView.reloadData()
+    }
+    
+    func deleteRow(index: IndexPath) {
+        tableView.deleteRows(at: [index], with: .fade)
     }
 }
 
@@ -94,21 +88,9 @@ extension DownloadView: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        
-        guard let model = presenter?.titles?[indexPath.row] else { return }
-        
         switch editingStyle {
         case .delete:
-            DataPersistenceManager.shared.deleteTitleWith(model: model) { [weak self] result in
-                switch result {
-                case .success():
-                    print("Deleted fromt the database")
-                case .failure(let error):
-                    print(error.localizedDescription)
-                }
-                self?.presenter?.titles?.remove(at: indexPath.row)
-                tableView.deleteRows(at: [indexPath], with: .fade)
-            }
+            presenter?.deleteTitleWith(index: indexPath)
         default:
             break;
         }
@@ -116,7 +98,6 @@ extension DownloadView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        
         guard let titleItem = presenter?.titles?[indexPath.row] else { return }
         presenter?.title = titleItem
         presenter?.getYoutubeVideo(from: K.Youtube.search,

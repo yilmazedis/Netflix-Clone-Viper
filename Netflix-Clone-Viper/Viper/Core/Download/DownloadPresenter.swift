@@ -17,6 +17,10 @@ protocol AnyDownloadPresenter {
     
     func titlePreviewConfigure(with videoElement: VideoElement)
     func getYoutubeVideo(from address: String, with query: String)
+    func fetchLocalStorageForDownload()
+    func reloadTableView()
+    func deleteRow(index: IndexPath)
+    func deleteTitleWith(index: IndexPath)
 }
 
 class DownloadPresnter: AnyDownloadPresenter {
@@ -33,5 +37,21 @@ class DownloadPresnter: AnyDownloadPresenter {
     
     func getYoutubeVideo(from address: String, with query: String)  {
         interactor?.getYoutubeVideo(from: address, with: query)
+    }
+    
+    func reloadTableView() {
+        view?.reloadTableView()
+    }
+    
+    func fetchLocalStorageForDownload() {
+        interactor?.fetchLocalStorageForDownload()
+    }
+    
+    func deleteRow(index: IndexPath) {
+        view?.deleteRow(index: index)
+    }
+    
+    func deleteTitleWith(index: IndexPath) {
+        interactor?.deleteTitleWith(index: index)
     }
 }
